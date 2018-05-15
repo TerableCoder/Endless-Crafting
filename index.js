@@ -20,7 +20,7 @@ module.exports = function EndlessCrafting(dispatch) {
 		gameId = event.gameId;
 	});
 	
-	dispatch.hook('S_UPDATE_FATIGABILITY', 1, event => {
+	dispatch.hook('S_FATIGABILITY_POINT', 2, event => {
 		pp = event.fatigability;
 	});
 	
@@ -45,7 +45,8 @@ module.exports = function EndlessCrafting(dispatch) {
 				unk3: 0,
 				unk4: true
 			});
-			dispatch.hookOnce('S_UPDATE_FATIGABILITY', 1, () => {
+			dispatch.hookOnce('S_FATIGABILITY_POINT', 2, (e) => {
+				if (enabled && e.fatigability > 200)
 				dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 			});
 		}
