@@ -7,6 +7,9 @@ Na opcodes for 330802: S_FATIGABILITY_POINT = 32647
 
 1. Type: /8 craft
 
-2. Craft 1 the item you want to continuously craft
+1a. To change pp consumable (elite cures are default): type /8 craft <LinkedItem>
+(You can link items in chat with Ctrl+LMB)
+
+2. Craft the item you want to continuously craft once
 
 3. To disable type: /8 craft

@@ -4,16 +4,32 @@ const Command = require('command');
 
 module.exports = function EndlessCrafting(dispatch) {
 	const command = Command(dispatch);
-	const cure = 182439; //Normal: 181100, elite: 182439
 
 	let enabled = false;
 	let gameId;
 	let craftItem;
 	let pp;
-	
-	command.add('craft', () => {
-		enabled = !enabled;
-		command.message('Endless crafting module ' + (enabled?'enabled.':'disabled.'));
+	let cureId = 182439; //Normal: 181100, elite: 182439
+	let cureDbid = 0;
+
+	command.add('craft', (chatLink) => {
+		if (!chatLink) {
+			enabled = !enabled;
+			command.message('Endless crafting module ' + (enabled?'enabled.':'disabled.'));
+			return;
+		} else {
+			var regexId = /#(\d*)@/;
+			var regexDbid = /@(\d*)@/;
+			var id = chatLink.match(regexId);
+			var dbid = chatLink.match(regexDbid);
+			if (id && dbid) {
+				cureId = parseInt(id[1]);
+				cureDbid = parseInt(dbid[1]);
+				command.message('Using cure with id:' + cureId);
+			} else {
+				command.message('Error, not a chatLink. Please type "craft <Item>"; link the item with Ctrl+LMB.');
+			}
+		}
 	});
 	
 	dispatch.hook('S_LOGIN', 10, event => {
@@ -33,8 +49,8 @@ module.exports = function EndlessCrafting(dispatch) {
 			command.message("Using cure.");
 			dispatch.toServer('C_USE_ITEM', 3, {
 				gameId: gameId,
-				id: cure,
-				dbid: 0,
+				id: cureId,
+				dbid: {low: cureDbid, high: 0, unsigned: true},
 				target: 0,
 				amount: 1,
 				dest: {x: 0, y: 0, z: 0},
@@ -47,7 +63,7 @@ module.exports = function EndlessCrafting(dispatch) {
 			});
 			dispatch.hookOnce('S_FATIGABILITY_POINT', 2, (e) => {
 				if (enabled && e.fatigability > 200)
-				dispatch.toServer('C_START_PRODUCE', 1, craftItem);
+					dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 			});
 		}
 	});
