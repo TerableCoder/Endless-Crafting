@@ -1,5 +1,5 @@
 //written by Bubble
-//will keep crafting the last crafted item
+//will keep crafting the last crafted item and use cures
 const Command = require('command');
 
 module.exports = function EndlessCrafting(dispatch) {
@@ -14,9 +14,16 @@ module.exports = function EndlessCrafting(dispatch) {
 
 	command.add('craft', (chatLink) => {
 		if (!chatLink) {
+			if (enabled) { //send fake failed craft after 5 sec to unlock char
+				command.message('Cancel crafting in 5 seconds.');
+				setTimeout(unlock, 5000);
+			}
 			enabled = !enabled;
 			command.message('Endless crafting module ' + (enabled?'enabled.':'disabled.'));
 			return;
+		}
+		if (chatLink === 'unlock') {
+			unlock();
 		} else {
 			var regexId = /#(\d*)@/;
 			var regexDbid = /@(\d*)@/;
@@ -25,12 +32,19 @@ module.exports = function EndlessCrafting(dispatch) {
 			if (id && dbid) {
 				cureId = parseInt(id[1]);
 				cureDbid = parseInt(dbid[1]);
-				command.message('Using cure with id:' + cureId);
+				command.message('Using pp consumable with id:' + cureId);
 			} else {
-				command.message('Error, not a chatLink. Please type "craft <Item>"; link the item with Ctrl+LMB.');
+				command.message('Error, not a chatLink. Please type "craft <Item>". Link the item with Ctrl+LMB.');
 			}
 		}
 	});
+
+	function unlock() {
+		dispatch.toClient('S_START_PRODUCE', 2, {
+			unk: false,
+   			maxProgress: 0
+		});
+	}
 	
 	dispatch.hook('S_LOGIN', 10, event => {
 		gameId = event.gameId;
@@ -46,7 +60,7 @@ module.exports = function EndlessCrafting(dispatch) {
 	
 	dispatch.hook('S_START_PRODUCE', 2, event => {
 		if (enabled && !event.unk && pp < 200) {
-			command.message("Using cure.");
+			command.message("Using pp consumable.");
 			dispatch.toServer('C_USE_ITEM', 3, {
 				gameId: gameId,
 				id: cureId,
@@ -69,7 +83,7 @@ module.exports = function EndlessCrafting(dispatch) {
 	});
 
 	dispatch.hook('S_UPDATE_PRODUCE', 2, event => {
-		if(event.done && enabled) {
+		if (enabled && event.done) {
 			dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 		}
 	});
