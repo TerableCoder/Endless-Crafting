@@ -11,7 +11,7 @@ Also requires command module
 
 Additional commands:
 
-"/8 craft <LinkedItem>" switches pp consumable
+"/8 craft linkedItem" switches pp consumable
 (You can link items in chat with Ctrl+LMB)
 
 "/8 craft unlock" if your character is still stuck 5 seconds after disabling
