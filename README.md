@@ -3,7 +3,7 @@
 This module will keep crafting the last crafted item and use Crafter's Cure (Elite is default, replace id in file to change deafult). 
 Also requires command module
 
-NA opcode for 329223: S_FATIGABILITY_POINT=57200
+NA opcode for 333782: S_FATIGABILITY_POINT=35539
 
 1. Type: /8 craft
 
