@@ -3,7 +3,7 @@
 This module will keep crafting the last crafted item and use Crafter's Cure (Elite is default, replace id in file to change deafult). 
 Also requires command module
 
-NA opcode for 333782: S_FATIGABILITY_POINT=35539
+NA opcode for 335637 (for caali's proxy) from https://github.com/meishuu/tera-data/blob/master/map/protocol.335637.map : S_FATIGABILITY_POINT=48294
 
 1. Type: /8 craft
 
