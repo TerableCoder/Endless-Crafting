@@ -1,9 +1,8 @@
 //written by Bubble
 //will keep crafting the last crafted item and use cures
-const Command = require('command');
 
 module.exports = function EndlessCrafting(dispatch) {
-	const command = Command(dispatch);
+	const command = dispatch.command;
 
 	let enabled = false;
 	let gameId;
@@ -82,7 +81,7 @@ module.exports = function EndlessCrafting(dispatch) {
 		}
 	});
 
-	dispatch.hook('S_UPDATE_PRODUCE', 2, event => {
+	dispatch.hook('S_UPDATE_PRODUCE', 3, event => {
 		if (enabled && event.done) {
 			dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 		}
