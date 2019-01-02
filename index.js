@@ -81,8 +81,8 @@ module.exports = function EndlessCrafting(dispatch) {
 		}
 	});
 
-	dispatch.hook('S_UPDATE_PRODUCE', 3, event => {
-		if (enabled && event.done) {
+	dispatch.hook('S_END_PRODUCE', 1, event => {
+		if (enabled && event.success) {
 			dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 		}
 	});
