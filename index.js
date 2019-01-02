@@ -3,7 +3,7 @@
 //will keep crafting the last crafted item and use cures
 
 module.exports = function EndlessCrafting(dispatch) {
-	const command = dispatch.command;
+	const command = dispatch.command || dispatch.require.command;
 
 	let enabled = false,
 		gameId,
