@@ -76,7 +76,7 @@ module.exports = function EndlessCrafting(dispatch) {
 				unk4: true
 			});
 			dispatch.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
-				if (enabled && e.fatigability > 500)
+				if (enabled && e.current > 500)
 					dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 			});
 		}
