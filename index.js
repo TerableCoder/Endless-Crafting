@@ -1,24 +1,20 @@
-//written by Bubble
-//will keep crafting the last crafted item and use cures
-
 module.exports = function EndlessCrafting(dispatch) {
-	const command = dispatch.command;
 
 	let enabled = false;
 	let gameId;
 	let craftItem;
 	let pp;
 	let cureId = 182439; //Normal: 181100, elite: 182439
-	let cureDbid = BigInt(0);
+	let cureDbid = 0;
 
-	command.add('craft', (chatLink) => {
+	dispatch.command.add('craft', (chatLink) => {
 		if (!chatLink) {
 			if (enabled) { //send fake failed craft after 5 sec to unlock char
-				command.message('Cancel crafting in 5 seconds.');
+				dispatch.command.message('Cancel crafting in 5 seconds.');
 				setTimeout(unlock, 5000);
 			}
 			enabled = !enabled;
-			command.message('Endless crafting module ' + (enabled?'enabled.':'disabled.'));
+			dispatch.command.message('Endless crafting module ' + (enabled?'enabled.':'disabled.'));
 			return;
 		}
 		if (chatLink === 'unlock') {
@@ -30,17 +26,17 @@ module.exports = function EndlessCrafting(dispatch) {
 			var dbid = chatLink.match(regexDbid);
 			if (id && dbid) {
 				cureId = parseInt(id[1]);
-				cureDbid = BigInt(parseInt(dbid[1]));
-				command.message('Using pp consumable with id:' + cureId);
+				cureDbid = parseInt(dbid[1]);
+				dispatch.command.message('Using pp consumable with id:' + cureId);
 			} else {
-				command.message('Error, not a chatLink. Please type "craft <Item>". Link the item with Ctrl+LMB.');
+				dispatch.command.message('Error, not a chatLink. Please type "craft <Item>". Link the item with Ctrl+LMB.');
 			}
 		}
 	});
 
 	function unlock() {
 		dispatch.toClient('S_START_PRODUCE', 3, {
-			duration:0
+			duration: 0
 		});
 	}
 	
@@ -49,23 +45,24 @@ module.exports = function EndlessCrafting(dispatch) {
 	});
 	
 	dispatch.hook('S_FATIGABILITY_POINT', 3, event => {
-		pp = event.fatigability;
+		pp = event.current;
+        //console.log(JSON.stringify(event,null,2));
 	});
 	
 	dispatch.hook('C_START_PRODUCE', 1, event => {
 		craftItem = event;
 	});
-
-	dispatch.hook('S_END_PRODUCE', 1, event => {
-		if (!enabled || !event.success) {
-			return;
-		}
-		if (pp < 500) {
-			command.message("Using pp consumable.");
+	
+	dispatch.hook('S_START_PRODUCE', 3, event => {
+		//if (enabled && !event.duration && pp < 200) {
+		if (enabled && pp < 200) {
+			dispatch.command.message("Using pp consumable.");
+            let cureObj = {low: cureDbid, high: 0, unsigned: true};
 			dispatch.toServer('C_USE_ITEM', 3, {
 				gameId: gameId,
 				id: cureId,
-				dbid: cureDbid,
+				dbid: parseInt(cureObj.low),
+                //dbid: cureDbid,
 				target: 0,
 				amount: 1,
 				dest: {x: 0, y: 0, z: 0},
@@ -76,12 +73,18 @@ module.exports = function EndlessCrafting(dispatch) {
 				unk3: 0,
 				unk4: true
 			});
-			dispatch.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
-				if (enabled && e.fatigability > 500)
+			dispatch.hookOnce('S_FATIGABILITY_POINT', 2, (e) => {
+				if (enabled && e.fatigability > 200)
 					dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 			});
-		} else {
-			dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 		}
+	});
+
+	dispatch.hook('S_END_PRODUCE', 1, event => {
+        //setTimeout(()=>{
+            if (enabled && event.success) {
+                dispatch.toServer('C_START_PRODUCE', 1, craftItem);
+            }
+        //}, 50);
 	});
 };
