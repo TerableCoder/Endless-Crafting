@@ -1,7 +1,7 @@
 # Endless-Crafting
 
 This module will keep crafting the last crafted item and use Crafter's Cure (Elite is default, replace id in file to change deafult). 
-Also requires command module
+Also requires command module. Works for both S_FATIGABILITY_POINT.3.def structures!
 
 If you have a S_FATIGABILITY_POINT error ask your fellow exploiter friend for the opcode
 
@@ -26,4 +26,6 @@ If you have a S_FATIGABILITY_POINT error ask your fellow exploiter friend for th
 
 Made by Sunpui
 
-Fixed and upgraded by TerableCoder
+## Fixed and upgraded by TerableCoder
+
+![](https://i.imgur.com/SAK7HP1.gif)
