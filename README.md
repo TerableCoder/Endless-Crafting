@@ -3,7 +3,17 @@
 This module will keep crafting the last crafted item and use Crafter's Cure (Elite is default, replace id in file to change deafult). 
 Also requires command module
 
-If you have a S_FATIGABILITY_POINT error ask your fellow exploiter friend for the opcode, or wait for caali to add it
+Make sure to drop S_FATIGABILITY_POINT.3.def into your proxies \node_modules\tera-data\protocol folder
+
+Getting this error?
+
+[mods] ERROR: Module "endless-crafting" could not be loaded!
+
+[mods] ERROR: Please contact the module's author: #help channel of https://discord.gg/dUNDDtw
+
+Error: [dispatch] hook: unmapped packet "S_FATIGABILITY_POINT"
+
+Head to [Tera-NA-Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes) to download NA's .map file and drop it into your proxies \node_modules\tera-data\map folder
 
 1. Type: /8 craft
 
