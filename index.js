@@ -5,6 +5,7 @@
 const config = require('./config.js');
 module.exports = function EndlessCrafting(dispatch){
 	const command = dispatch.command || dispatch.require.command;
+	mod.game.initialize(["me"]);
 
 	let craftItem,
 		pp,
