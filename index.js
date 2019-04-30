@@ -3,11 +3,10 @@
 //will keep crafting the last crafted item and use cures
 
 const config = require('./config.js');
-module.exports = function EndlessCrafting(dispatch) {
+module.exports = function EndlessCrafting(dispatch){
 	const command = dispatch.command || dispatch.require.command;
 
-	let gameId,
-		craftItem,
+	let craftItem,
 		pp,
 		cureDbid = 0n,
 		timeout = null;
@@ -21,7 +20,7 @@ module.exports = function EndlessCrafting(dispatch) {
 			}
 			config.enabled = !config.enabled;
 			command.message('Endless crafting module ' + (config.enabled?'enabled.':'disabled.'));
-			if(config.delay < 0) {
+			if(config.delay < 0){
 				config.delay = 0;
 				command.message("Invalid config.delay, delay is now " + config.delay);
 			}
@@ -30,7 +29,7 @@ module.exports = function EndlessCrafting(dispatch) {
     	unlock(){
 	    	unlock();
     	},
-		delay(number) {
+		delay(number){
 	    	let tempDelay = parseInt(number);
 			if(tempDelay >= 0){
 				config.delay = tempDelay;
@@ -68,7 +67,7 @@ module.exports = function EndlessCrafting(dispatch) {
 		clearTimeout(timeout);
 		timeout = dispatch.setTimeout(() => {
 			dispatch.toServer('C_USE_ITEM', 3, {
-				gameId: gameId,
+				gameId: mod.game.me.gameId,
 				id: config.cureId,
 				dbid: cureDbid,
 				target: 0,
@@ -87,14 +86,9 @@ module.exports = function EndlessCrafting(dispatch) {
 		}, config.delay);
 	}
 	
-	dispatch.hook('S_LOGIN', 12, event => {
-		gameId = event.gameId;
-	});
-	
 	dispatch.hook('S_FATIGABILITY_POINT', 3, event => {
 		if(!event.current){ pp = event.fatigability; } // work for new and old labeling
 		else{ (event.fatigability < event.current) ? (pp = event.fatigability):(pp = event.current); }
-		//pp = event.fatigability; // in the future
 	});
 	
 	dispatch.hook('C_START_PRODUCE', 1, event => {
@@ -102,11 +96,11 @@ module.exports = function EndlessCrafting(dispatch) {
 	});
 	
 	dispatch.hook('S_START_PRODUCE', 3, event => {
-		if (config.enabled && pp < 500) usePPPotThenCraft();
+		if(config.enabled && pp < 500) usePPPotThenCraft();
 	});
 	
 	dispatch.hook('S_END_PRODUCE', 1, event => {
-		if (config.enabled && event.success) {
+		if(config.enabled && event.success){
 			clearTimeout(timeout);
 			timeout = dispatch.setTimeout(() => {
 				dispatch.toServer('C_START_PRODUCE', 1, craftItem);
@@ -117,7 +111,7 @@ module.exports = function EndlessCrafting(dispatch) {
 	dispatch.hook('S_SYSTEM_MESSAGE', 1, event => {
 		if(!config.enabled) return;
     	const msg = dispatch.parseSystemMessage(event.message);
-		if(msg && msg.id === 'SMT_YOU_CANT_PRODUCE_NOT_ENOUGH_FATIGUE') { // no pp
+		if(msg && msg.id === 'SMT_YOU_CANT_PRODUCE_NOT_ENOUGH_FATIGUE'){ // no pp
 			usePPPotThenCraft();
 		}
 	});
