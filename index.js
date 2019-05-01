@@ -68,7 +68,7 @@ module.exports = function EndlessCrafting(dispatch){
 		clearTimeout(timeout);
 		timeout = dispatch.setTimeout(() => {
 			dispatch.toServer('C_USE_ITEM', 3, {
-				gameId: mod.game.me.gameId,
+				gameId: dispatch.game.me.gameId,
 				id: config.cureId,
 				dbid: cureDbid,
 				target: 0,
