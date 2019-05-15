@@ -5,16 +5,9 @@ Also requires command module
 
 Make sure to drop S_FATIGABILITY_POINT.3.def into your proxies \node_modules\tera-data\protocol folder
 
-Getting this error?
+Make sure to get your Opcodes from https://github.com/TerableCoder/TerableOpcodes
 
-[mods] ERROR: Module "endless-crafting" could not be loaded!
-
-[mods] ERROR: Please contact the module's author: #help channel of https://discord.gg/dUNDDtw
-
-Error: [dispatch] hook: unmapped packet "S_FATIGABILITY_POINT"
-
-Head to [Tera-NA-Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes) to download NA's .map file and drop it into your proxies \node_modules\tera-data\map folder
-
+## Usage
 1. Type: /8 craft
 
 2. Craft the item you want to continuously craft once
@@ -27,7 +20,7 @@ Head to [Tera-NA-Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes) to do
 ### `cureId`
 - The default is elite crafters cure: 182439, you can change the default to normal crafters cure: 181100
 ### `delay`
-- The default is 0, if you're having issues with the mod, increase this number
+- The default is 0, if you're having issues with the mod, try increasing this number
 
 ## Additional commands:
 ### `/8 craft linkedItem` 
@@ -39,5 +32,3 @@ Head to [Tera-NA-Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes) to do
 Created by Sunpui
 
 Fixed and upgraded by TerableCoder
-
-![](https://i.imgur.com/SAK7HP1.gif)
