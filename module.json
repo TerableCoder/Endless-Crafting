@@ -2,7 +2,7 @@
     "disableAutoUpdate": false,
     "name": "endless-crafting",
     "author": "Sunpui / Terablecoder",
-    "description": "Keep crafting the last crafted item, track number of crafts and crafting crits, reuse Moongourd Pie, and use Crafter's Cures",
+    "description": "Continuously crafts the last crafted item, tracks the number of crafts and crafting crits, reuses Moongourd Pie, and uses Crafter's Cures",
     "version": "6/28/2019",
     "options": {
         "settingsVersion": 1,
