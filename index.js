@@ -81,7 +81,7 @@ module.exports = function EndlessCrafting(mod){
 	
 	function unload(){
 		clearTimeout(timeout);
-		timeout = setTimeout(doneCrafting, 5000); //send fake failed craft after 5 sec to unlock char
+		timeout = setTimeout(doneCrafting, 5000); //send fake failed craft after 5 sec to unlock the character
 		if(hooks.length){
 			for (let h of hooks)
 				mod.unhook(h);
