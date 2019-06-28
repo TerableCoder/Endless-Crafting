@@ -1,5 +1,6 @@
 //created by Bubble
 //rewritten by TerableCoder
+String.prototype.clr = function (hexColor){ return `<font color='#${hexColor}'>${this}</font>`};
 
 module.exports = function EndlessCrafting(mod){
 	const command = mod.command || mod.require.command,
@@ -16,6 +17,8 @@ module.exports = function EndlessCrafting(mod){
 		loc = {x: 0, y: 0, z: 0},
 		w = 0,
 		extraDelay = 0,
+		numCrafts = 0,
+		numCrits = 0,
 		hooks = [];
 
 	command.add('craft', {
@@ -69,12 +72,16 @@ module.exports = function EndlessCrafting(mod){
 		}, 0);
 	}
 
+	function doneCrafting(){
+		command.message(`You crafted ${numCrafts.toString().clr("00BFFF")} times and crit ${numCrits.toString().clr("32CD32")} times.`);
+		unlock();
+	}
+
 	function hook(){ hooks.push(mod.hook(...arguments)); }
 	
 	function unload(){
 		clearTimeout(timeout);
-		timeout = setTimeout(unlock, 5000); //send fake failed craft after 5 sec to unlock char
-		command.message('Cancel crafting in 5 seconds.');
+		timeout = setTimeout(doneCrafting, 5000); //send fake failed craft after 5 sec to unlock char
 		if(hooks.length){
 			for (let h of hooks)
 				mod.unhook(h);
@@ -84,6 +91,9 @@ module.exports = function EndlessCrafting(mod){
 
 	function load(){
 		if(!hooks.length){
+			numCrafts = 0;
+			numCrits = 0;
+
 			hook('C_PLAYER_LOCATION', 5, event => {
 				Object.assign(loc, event.loc);
 				w = event.w;
@@ -103,8 +113,13 @@ module.exports = function EndlessCrafting(mod){
 				craftItem = event;
 			});
 			
+			hook('S_PRODUCE_CRITICAL', 1, event => {
+				numCrits++;
+			});
+			
 			hook('S_END_PRODUCE', 1, event => {
 				if(!event.success) return;
+				numCrafts++;
 				extraDelay = 0;
 
 				if(usePie){

@@ -1,5 +1,5 @@
 # Endless-Crafting
-This module will keep crafting the last crafted item, reuse Moongourd Pie, and use Crafter's Cures (Elite is default, replace id in file to change deafult).
+This module will keep crafting the last crafted item, track number of crafts and crafting crits, reuse Moongourd Pie, and use Crafter's Cures (Elite is default, replace id in file to change deafult).
 
 Make sure to drop S_FATIGABILITY_POINT.3.def into your proxies \node_modules\tera-data\protocol folder
 
