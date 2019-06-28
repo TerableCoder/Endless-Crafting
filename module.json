@@ -2,8 +2,13 @@
     "disableAutoUpdate": false,
     "name": "endless-crafting",
     "author": "Sunpui / Terablecoder",
-    "homepage": "https://github.com/TerableCoder/Endless-Crafting",
     "description": "Keep crafting the last crafted item and use Crafter's Cures when low on pp",
-    "version": "2",
-    "servers": ["https://raw.githubusercontent.com/TerableCoder/endless-crafting/master/"]
+    "version": "6/28/2019",
+    "options": {
+        "settingsVersion": 1,
+        "settingsFile": "config.json",
+        "settingsMigrator": "settings_migrator.js"
+    },
+    "servers": ["https://raw.githubusercontent.com/TerableCoder/endless-crafting/master/"],
+    "supportUrl": "https://github.com/TerableCoder/Endless-Crafting/issues"
 }

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "data": {
+        "enabled": false,
+        "cureId": 182439,
+        "delay": 0,
+        "reUsePie": true
+    }
+}

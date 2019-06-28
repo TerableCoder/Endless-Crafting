@@ -1,15 +1,20 @@
 {
 	"files": {
-		"config.js": "c0b8bf2c1ee4d82caee6acd03560a2966ab0a9078efe9c5c6f3aca7fbac28095",
-		"index.js": "81975b52e625a4345bdc18282cee64cfc110f19b41fd9ba422000fbc03f75d03",
-		"module.json": "b65e40005e8fff4a0df6628ae9c6125edcb018ea233246312f678dbba70a1040",
-		"README.md": "d33c2eb6c67e77ea9d97d5890b2c9befba4c242268fc8adc286e56fe99161c0c"
+		"config.json": {
+            "overwrite": false,
+			"hash": "f01a12f6c3a7b6f893a3909bfccda405d11a78173ea6cedec9ea03753e21f7c8"
+		},
+		"index.js": "3a0e7eed08f127b7430859b68a4c171089a9082cded5f47d86f1a128340d0eca",
+		"module.json": "1a0203e1879d676ddd95673153cc7029bd0dc3d761b775d0e0ce2463103e5e0a",
+		"README.md": "30db0f45f894ee34d8aba5ffd4d6c7bd6921899ed3941109b282cddd061bc26e",
+		"settings_migrator.js": "dbc7e0fd3fa75fa5649fe793255ee25b74dcc456230fc356ab1d677c9fe650fe"
 	},
 	"defs": {
-		"C_USE_ITEM": 3,
+		"C_PLAYER_LOCATION": 5,
+		"S_ABNORMALITY_END": 1,
 		"S_FATIGABILITY_POINT": 3,
 		"C_START_PRODUCE": 1,
-		"S_START_PRODUCE": 3,
-		"S_SYSTEM_MESSAGE": 1
+		"S_END_PRODUCE": 1,
+		"C_USE_ITEM": 3
 	}
 }
