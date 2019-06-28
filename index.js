@@ -6,11 +6,23 @@ const config = require('./config.js');
 module.exports = function EndlessCrafting(dispatch){
 	const command = dispatch.command || dispatch.require.command;
 	dispatch.game.initialize(["me"]);
+	dispatch.game.initialize('inventory'); // call for Tera-Game-State Inventory Submodule
 
 	let craftItem,
 		pp,
 		cureDbid = 0n,
-		timeout = null;
+		timeout = null,
+		usepie = false,
+		PieCdw;
+		
+	const PIE_ID = 206023,
+		  PIE_AB_ID = 70264;
+	
+	let myGid,
+		oX,
+		oY,
+		oZ,
+		oW;
 
 	command.add('craft', {
 		$none(){
@@ -30,6 +42,10 @@ module.exports = function EndlessCrafting(dispatch){
     	unlock(){
 	    	unlock();
     	},
+		pie(){
+			usepie = !usepie;
+			command.message("Moule will " + usepie ? "use":"not use" + "pie off cdw once you start crafting.");
+		},
 		delay(number){
 	    	let tempDelay = parseInt(number);
 			if(tempDelay >= 0){
@@ -116,4 +132,66 @@ module.exports = function EndlessCrafting(dispatch){
 			usePPPotThenCraft();
 		}
 	});
+	
+	dispatch.hook('S_LOGIN', 13, (event) => {
+        myGid = event.gameId;
+    });
+	
+    dispatch.hook('C_PLAYER_LOCATION', 5, { order: -10 }, (event) => {
+        oX = (event.loc.x + event.dest.x) / 2;
+        oY = (event.loc.y + event.dest.y) / 2;
+        oZ = (event.loc.z + event.dest.z) / 2;
+        oW = event.w;
+    });
+	
+	dispatch.hook('S_START_PRODUCE', 3, event => {
+		if(!PieCdw) usePieThenCraft();
+	});
+	
+	function usePieThenCraft(){
+		command.message("Using pie.");
+		clearTimeout(timeout);
+		timeout = dispatch.setTimeout(() => {
+			
+			var pita = dispatch.game.inventory.findInBag(PIE_ID); // get Item Beer
+								dispatch.toServer('C_USE_ITEM', 3, {
+									gameId: myGid,
+									id: pita.id,
+									dbid: pita.dbid,
+									target: 0,
+									amount: 1,
+									dest: {x: 0, y: 0, z: 0},
+									loc: {x: oX, y: oY, z: oZ},
+									w: oW,
+									unk1: 0,
+									unk2: 0,
+									unk3: 0,
+									unk4: 1
+								});
+								
+								PieCdw = true;
+								
+								
+			dispatch.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
+				if(config.enabled) dispatch.toServer('C_START_PRODUCE', 1, craftItem);
+			});
+		}, config.delay);
+	}
+	
+	dispatch.hook('S_ABNORMALITY_END', 1, event => {
+		if(!config.enabled){
+			if(usepie){
+				if(event.target == myGid)
+					if(event.id == PIE_AB_ID){
+						if (dispatch.game.inventory.getTotalAmountInBag(PIE_ID) > 0){
+							PieCdw = false;
+						}
+						else{
+							command.message("You are out of moongourd pies!");
+						}
+					}
+			}
+		}
+	});
+	
 };
