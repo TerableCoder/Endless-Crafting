@@ -147,7 +147,7 @@ module.exports = function EndlessCrafting(mod){
 					}
 				}
 
-				if(pp < 501){
+				if(pp < 1001){
 					command.message("Using pp consumable.");
 					extraDelay += 10;
 					mod.setTimeout(() => {
