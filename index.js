@@ -124,24 +124,26 @@ module.exports = function EndlessCrafting(mod){
 
 				if(usePie){
 					usePie = false;
-					let foundPie = mod.game.inventory.findInBag(PIE_ID); // get Item
+					let foundPie = mod.game.inventory.findInBagOrPockets(PIE_ID); // get Item
 					if(foundPie && foundPie.amount > 0){
-						extraDelay = 10;
+						extraDelay = 1000;
 						command.message("Using Moongourd Pie.");
-						mod.send('C_USE_ITEM', 3, {
-							gameId: mod.game.me.gameId,
-							id: PIE_ID,
-							dbid: foundPie.dbid,
-							target: 0,
-							amount: 1,
-							dest: {x: 0, y: 0, z: 0},
-							loc: loc,
-							w: w,
-							unk1: 0,
-							unk2: 0,
-							unk3: 0,
-							unk4: true
-						});
+						mod.setTimeout(() => {
+							mod.send('C_USE_ITEM', 3, {
+								gameId: mod.game.me.gameId,
+								id: PIE_ID,
+								dbid: foundPie.dbid,
+								target: 0,
+								amount: 1,
+								dest: {x: 0, y: 0, z: 0},
+								loc: loc,
+								w: w,
+								unk1: 0,
+								unk2: 0,
+								unk3: 0,
+								unk4: true
+							});
+						}, extraDelay/2);
 					} else{
 						command.message("You have 0 Moongourd Pies.");
 					}
@@ -168,7 +170,7 @@ module.exports = function EndlessCrafting(mod){
 						mod.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
 							mod.send('C_START_PRODUCE', 1, craftItem);
 						});
-					}, 5);
+					}, 5 + extraDelay);
 				} else{
 					clearTimeout(timeout);
 					timeout = mod.setTimeout(() => {
