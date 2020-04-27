@@ -126,7 +126,7 @@ module.exports = function EndlessCrafting(mod){
 					usePie = false;
 					let foundPie = mod.game.inventory.findInBagOrPockets(PIE_ID); // get Item
 					if(foundPie && foundPie.amount > 0){
-						extraDelay = 1000;
+						extraDelay = 5000;
 						command.message("Using Moongourd Pie.");
 						mod.setTimeout(() => {
 							mod.send('C_USE_ITEM', 3, {
